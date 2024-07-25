@@ -1,34 +1,10 @@
 package utils
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
-	"strings"
 )
-
-func ShowMenu() {
-	fmt.Println("\nTODO MENU: ")
-	fmt.Println("1. Add todo")
-	fmt.Println("2. Mark todo")
-	fmt.Println("3. Unmark todo")
-	fmt.Println("4. Delete todo")
-	fmt.Println("5. Quit")
-	fmt.Print("\nEnter your choice: ")
-}
-
-func ReadChoice() int {
-	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	choice, err := strconv.Atoi(strings.TrimSpace(input))
-	if err != nil {
-		fmt.Println("Invalid input, please enter a number.")
-		return 0
-	}
-	return choice
-}
 
 func CreateFileIfNotExists(filename string) (bool, error) {
 	// Ottieni la directory del file
@@ -47,19 +23,21 @@ func CreateFileIfNotExists(filename string) (bool, error) {
 	}
 	defer file.Close()
 
-	// Verifica se il file è stato effettivamente creato
-	created := false
-	if info, err := file.Stat(); err == nil {
-		if info.Size() == 0 {
-			created = true
-		}
+	// Controlla se il file è stato effettivamente creato
+	fi, err := file.Stat()
+	if err != nil {
+		return false, err
 	}
 
-	return created, nil
+	// Controlla se il file era già presente
+	return fi.Size() == 0, nil
 }
 
-func ReadString() string {
-	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	return input[:len(input)-1] // Rimuovi il newline finale
+func PrintHelp() {
+	fmt.Println("Usage: todo [command] [options]")
+	fmt.Println("Commands:")
+	fmt.Println("  add [todo] [dd-mm-yy]  - Add a new todo")
+	fmt.Println("  mark [id]              - Mark a todo as completed")
+	fmt.Println("  unmark [id]            - Unmark a todo as not completed")
+	fmt.Println("  delete [id]            - Delete a todo")
 }

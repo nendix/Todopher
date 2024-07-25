@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-// MarkToDo segna un'attività come completata nel file specificato
-func MarkToDo(filename string, id uint8) error {
+// DeleteToDo elimina un'attività dal file specificato
+func DeleteToDo(filename string, id uint8) error {
 	// Leggi il contenuto del file
 	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
 	if err != nil {
@@ -27,20 +27,23 @@ func MarkToDo(filename string, id uint8) error {
 		return err
 	}
 
-	// Trova e aggiorna la riga corrispondente all'ID
+	// Trova e rimuovi la riga corrispondente all'ID e aggiorna gli ID
 	var updatedLines []string
+	var newID uint8 = 1
 	for _, line := range lines {
 		fields := strings.Fields(line)
 		if len(fields) >= 4 {
 			lineID, err := strconv.ParseUint(fields[0], 10, 8)
 			if err == nil && uint8(lineID) == id {
-				fields[1] = "[X]" // Segna come completato
+				continue // Salta la riga da eliminare
 			}
-			updatedLines = append(updatedLines, strings.Join(fields, " "))
+			fields[0] = fmt.Sprintf("%03d", newID) // Aggiorna l'ID
+			newID++
 		}
+		updatedLines = append(updatedLines, strings.Join(fields, " "))
 	}
 
-	// Scrivi il contenuto aggiornato nel file
+	// Riscrivi il file con il contenuto aggiornato
 	file, err = os.OpenFile(filename, os.O_TRUNC|os.O_RDWR, 0666)
 	if err != nil {
 		return err
@@ -48,8 +51,7 @@ func MarkToDo(filename string, id uint8) error {
 	defer file.Close()
 
 	for _, line := range updatedLines {
-		_, err := fmt.Fprintln(file, line)
-		if err != nil {
+		if _, err := fmt.Fprintln(file, line); err != nil {
 			return err
 		}
 	}

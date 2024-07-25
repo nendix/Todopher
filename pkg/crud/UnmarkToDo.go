@@ -9,7 +9,7 @@ import (
 )
 
 // MarkToDo segna un'attività come completata nel file specificato
-func MarkToDo(filename string, id uint8) error {
+func UnmarkToDo(filename string, id uint8) error {
 	// Leggi il contenuto del file
 	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
 	if err != nil {
@@ -34,7 +34,7 @@ func MarkToDo(filename string, id uint8) error {
 		if len(fields) >= 4 {
 			lineID, err := strconv.ParseUint(fields[0], 10, 8)
 			if err == nil && uint8(lineID) == id {
-				fields[1] = "[X]" // Segna come completato
+				fields[1] = "[ ]" // Segna come completato
 			}
 			updatedLines = append(updatedLines, strings.Join(fields, " "))
 		}
