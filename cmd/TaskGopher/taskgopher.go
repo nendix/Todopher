@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strconv"
 
+	tgfuncs "github.com/nendix/TaskGopher/internal/tgfuncs"
 	"github.com/nendix/TaskGopher/internal/utils"
-	tgfuncs "github.com/nendix/TaskGopher/pkg/tgfuncs"
 )
 
 func main() {
