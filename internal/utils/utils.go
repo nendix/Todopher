@@ -34,7 +34,7 @@ func CreateFileIfNotExists(filename string) (bool, error) {
 }
 
 func PrintHelp() {
-	fmt.Println("Usage: todo [command] [options]")
+	fmt.Println("Usage: tg [command] [options]")
 	fmt.Println("Commands:")
 	fmt.Println("  list                                     - List all todos")
 	fmt.Println("  add [todo] [dd-mm-yy]                    - Add a new todo")
