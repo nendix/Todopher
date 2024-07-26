@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-// DeleteToDo elimina un'attività dal file specificato
-func DeleteToDo(filename string, id uint8) error {
+// DeleteToDos elimina una lista di attività dal file specificato
+func DeleteToDos(filename string, ids []uint8) error {
 	// Leggi il contenuto del file
 	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
 	if err != nil {
@@ -27,18 +27,26 @@ func DeleteToDo(filename string, id uint8) error {
 		return err
 	}
 
-	// Trova e rimuovi la riga corrispondente all'ID e aggiorna gli ID
+	// Crea un set di ID da eliminare per una ricerca veloce
+	idSet := make(map[uint8]struct{})
+	for _, id := range ids {
+		idSet[id] = struct{}{}
+	}
+
+	// Trova e rimuovi le righe corrispondenti agli ID e aggiorna gli ID
 	var updatedLines []string
 	var newID uint8 = 1
 	for _, line := range lines {
 		fields := strings.Fields(line)
 		if len(fields) >= 4 {
 			lineID, err := strconv.ParseUint(fields[0], 10, 8)
-			if err == nil && uint8(lineID) == id {
-				continue // Salta la riga da eliminare
+			if err == nil {
+				if _, exists := idSet[uint8(lineID)]; exists {
+					continue // Salta le righe da eliminare
+				}
+				fields[0] = fmt.Sprintf("%03d", newID) // Aggiorna l'ID
+				newID++
 			}
-			fields[0] = fmt.Sprintf("%03d", newID) // Aggiorna l'ID
-			newID++
 		}
 		updatedLines = append(updatedLines, strings.Join(fields, " "))
 	}

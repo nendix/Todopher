@@ -91,19 +91,23 @@ func main() {
 
 	case "delete", "d":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: todo delete [id]")
+			fmt.Println("Usage: todo delete [id1 id2 ...]")
 			return
 		}
-		id, err := strconv.ParseUint(os.Args[2], 10, 8)
-		if err != nil {
-			fmt.Println("Invalid ID format:", err)
-			return
+		var ids []uint8
+		for _, idStr := range os.Args[2:] {
+			id, err := strconv.ParseUint(idStr, 10, 8)
+			if err != nil {
+				fmt.Println("Invalid ID format:", err)
+				return
+			}
+			ids = append(ids, uint8(id))
 		}
-		err = crud.DeleteToDo(filename, uint8(id))
+		err = crud.DeleteToDos(filename, ids)
 		if err != nil {
-			fmt.Println("Error deleting todo:", err)
+			fmt.Println("Error deleting todos:", err)
 		} else {
-			fmt.Println("Todo deleted.")
+			fmt.Println("Todos deleted.")
 		}
 
 	default:

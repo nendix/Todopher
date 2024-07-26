@@ -34,10 +34,11 @@ func UnmarkToDo(filename string, id uint8) error {
 		if len(fields) >= 4 {
 			lineID, err := strconv.ParseUint(fields[0], 10, 8)
 			if err == nil && uint8(lineID) == id {
-				fields[1] = "[ ]" // Segna come completato
+				// Sostituisci [ ] con [X]
+				line = strings.Replace(line, "[X]", "[ ]", 1)
 			}
-			updatedLines = append(updatedLines, strings.Join(fields, " "))
 		}
+		updatedLines = append(updatedLines, line)
 	}
 
 	// Scrivi il contenuto aggiornato nel file
