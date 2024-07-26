@@ -9,7 +9,7 @@ import (
 )
 
 // EditToDo modifica il testo e/o la data di scadenza di un'attività
-func EditToDo(filename string, id uint8, newTask string, newDue string) error {
+func EditToDo(filename string, id uint8, newTodo string, newDate string) error {
 	// Leggi il contenuto del file
 	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
 	if err != nil {
@@ -39,9 +39,9 @@ func EditToDo(filename string, id uint8, newTask string, newDue string) error {
 				fields[1] = "[ ]" // Rimuovi il marcatura esistente
 				// La data di scadenza può essere nell'ultimo campo, ma assicurati di avere un formato corretto
 				if len(fields) >= 4 {
-					line = fmt.Sprintf("%03d %s %s %s", id, fields[1], newTask, newDue)
+					line = fmt.Sprintf("%03d %s %s %s", id, fields[1], newTodo, newDate)
 				} else {
-					line = fmt.Sprintf("%03d %s %s %s", id, fields[1], newTask, newDue)
+					line = fmt.Sprintf("%03d %s %s %s", id, fields[1], newTodo, newDate)
 				}
 			}
 		}

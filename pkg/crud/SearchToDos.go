@@ -2,6 +2,7 @@ package crud
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -32,7 +33,7 @@ func SearchToDos(filename, keyword string) error {
 	}
 
 	if !found {
-		fmt.Println("No todos found with the given keyword.")
+		return errors.New("No todos found with the given keyword.")
 	}
 
 	return nil

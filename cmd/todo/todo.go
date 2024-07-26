@@ -35,6 +35,8 @@ func main() {
 	command := os.Args[1]
 
 	switch command {
+	case "help":
+		utils.PrintHelp()
 	case "add", "a":
 		if len(os.Args) < 4 {
 			fmt.Println("Usage: todo add [todo] [dd-mm-yy]")

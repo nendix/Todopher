@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-// ListToDos stampa la lista di tutti i TODO dal file specificato
+// ListToDos stampa la lista di tutti i todo dal file specificato
 func ListToDos(filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
