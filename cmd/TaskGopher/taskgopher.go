@@ -29,7 +29,7 @@ func main() {
 	}
 
 	if len(os.Args) < 2 {
-		tgfuncs.PrintHelp()
+		tgfuncs.Help()
 		return
 	}
 
@@ -37,7 +37,7 @@ func main() {
 
 	switch command {
 	case "help":
-		tgfuncs.PrintHelp()
+		tgfuncs.Help()
 	case "add", "a":
 		if len(os.Args) < 4 {
 			fmt.Println("Usage: tgfuncs add [todo] [dd-mm-yy]")
@@ -162,6 +162,6 @@ func main() {
 
 	default:
 		fmt.Println("Unknown command:", command)
-		tgfuncs.PrintHelp()
+		tgfuncs.Help()
 	}
 }

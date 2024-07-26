@@ -2,7 +2,7 @@ package tg
 
 import "fmt"
 
-func PrintHelp() {
+func Help() {
 	fmt.Println("Usage: tg [command] [options]")
 	fmt.Println("Commands:")
 	fmt.Println("  list                                     - List all todos")
