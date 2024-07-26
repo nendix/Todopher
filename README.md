@@ -4,7 +4,7 @@ A simple file-based todo manager written in Go
 
 ### Usage:
 
-todo [command] [options] <br>
+**todo** [command] [options] <br>
 
 #### Commands:
 
@@ -16,3 +16,8 @@ todo [command] [options] <br>
 - **search** [key_word] - List all todos that contain the keyword
 - **sort** [id] [by_status|by_date] - Sort todos by status or by date
 - **delete** [id1 id2 ...] - Delete todos
+
+#### NOTE:
+
+GoToDo saves the todos in _your_home_dir_/todo/todos.txt <br>
+To change the default saving path and file name you have to modify the **filename variable** inside the **todo.go** file with your desired path and filename.
