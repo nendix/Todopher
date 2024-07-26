@@ -7,7 +7,7 @@ import (
 )
 
 // AddToDo aggiunge un nuovo todo al file specificato
-func AddToDo(filename, label, due string) error {
+func AddToDo(filename, task, due string) error {
 	// Apri il file in modalità append e crea il file se non esiste
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
@@ -24,7 +24,7 @@ func AddToDo(filename, label, due string) error {
 	newID := lastID + 1
 
 	// Scrivi il nuovo todo
-	_, err = fmt.Fprintf(file, "%03d [ ] %s for %s\n", newID, label, due)
+	_, err = fmt.Fprintf(file, "%03d [ ] %s for %s\n", newID, task, due)
 	if err != nil {
 		return err
 	}

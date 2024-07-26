@@ -48,7 +48,24 @@ func main() {
 		} else {
 			fmt.Println("Todo added successfully.")
 		}
-
+	case "edit", "e":
+		if len(os.Args) < 5 {
+			fmt.Println("Usage: todo edit [id] [new task] [new dd-mm-yy]")
+			return
+		}
+		id, err := strconv.ParseUint(os.Args[2], 10, 8)
+		if err != nil {
+			fmt.Println("Invalid ID format:", err)
+			return
+		}
+		newTask := os.Args[3]
+		newDue := os.Args[4]
+		err = crud.EditToDo(filename, uint8(id), newTask, newDue)
+		if err != nil {
+			fmt.Println("Error editing todo:", err)
+		} else {
+			fmt.Println("Todo edited successfully.")
+		}
 	case "mark", "m":
 		if len(os.Args) < 3 {
 			fmt.Println("Usage: todo mark [id]")
@@ -95,6 +112,28 @@ func main() {
 		err := crud.ListToDos(filename)
 		if err != nil {
 			fmt.Println("Error listing todos:", err)
+		}
+
+	case "search", "s":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: todo search [keyword]")
+			return
+		}
+		keyword := os.Args[2]
+		err := crud.SearchToDos(filename, keyword)
+		if err != nil {
+			fmt.Println("Error searching todos:", err)
+		}
+
+	case "sort":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: todo sort [by_date|by_status]")
+			return
+		}
+		criteria := os.Args[2]
+		err := crud.SortToDos(filename, criteria)
+		if err != nil {
+			fmt.Println("Error sorting todos:", err)
 		}
 
 	case "delete", "d":
