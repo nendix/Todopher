@@ -19,5 +19,5 @@ A simple file-based todo manager written in Go
 
 #### NOTE:
 
-GoToDo saves the todos in _your_home_dir_/todo/todos.txt <br>
+TaskGopher saves the todos in _your_home_dir_/todo/todos.txt <br>
 To change the default saving path and file name you have to modify the **filename variable** inside the **todo.go** file with your desired path and filename.
