@@ -5,8 +5,9 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"todo/internal/utils"
-	"todo/pkg/crud"
+
+	"github.com/nendix/TaskGopher/internal/utils"
+	tgfuncs "github.com/nendix/TaskGopher/pkg/tgfuncs"
 )
 
 func main() {
@@ -28,7 +29,7 @@ func main() {
 	}
 
 	if len(os.Args) < 2 {
-		utils.PrintHelp()
+		tgfuncs.PrintHelp()
 		return
 	}
 
@@ -36,15 +37,15 @@ func main() {
 
 	switch command {
 	case "help":
-		utils.PrintHelp()
+		tgfuncs.PrintHelp()
 	case "add", "a":
 		if len(os.Args) < 4 {
-			fmt.Println("Usage: todo add [todo] [dd-mm-yy]")
+			fmt.Println("Usage: tgfuncs add [todo] [dd-mm-yy]")
 			return
 		}
 		label := os.Args[2]
 		due := os.Args[3]
-		err := crud.AddToDo(filename, label, due)
+		err := tgfuncs.AddToDo(filename, label, due)
 		if err != nil {
 			fmt.Println("Error adding todo:", err)
 		} else {
@@ -52,7 +53,7 @@ func main() {
 		}
 	case "edit", "e":
 		if len(os.Args) < 5 {
-			fmt.Println("Usage: todo edit [id] [new task] [new dd-mm-yy]")
+			fmt.Println("Usage: tgfuncs edit [id] [new task] [new dd-mm-yy]")
 			return
 		}
 		id, err := strconv.ParseUint(os.Args[2], 10, 8)
@@ -62,7 +63,7 @@ func main() {
 		}
 		newTask := os.Args[3]
 		newDue := os.Args[4]
-		err = crud.EditToDo(filename, uint8(id), newTask, newDue)
+		err = tgfuncs.EditToDo(filename, uint8(id), newTask, newDue)
 		if err != nil {
 			fmt.Println("Error editing todo:", err)
 		} else {
@@ -70,7 +71,7 @@ func main() {
 		}
 	case "mark", "m":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: todo mark [id]")
+			fmt.Println("Usage: tgfuncs mark [id]")
 			return
 		}
 		var ids []uint8
@@ -82,7 +83,7 @@ func main() {
 			}
 			ids = append(ids, uint8(id))
 		}
-		err = crud.MarkToDos(filename, ids)
+		err = tgfuncs.MarkToDos(filename, ids)
 		if err != nil {
 			fmt.Println("Error marking todo:", err)
 		} else {
@@ -91,7 +92,7 @@ func main() {
 
 	case "unmark", "u":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: todo unmark [id1 id2 ...]")
+			fmt.Println("Usage: tgfuncs unmark [id1 id2 ...]")
 			return
 		}
 		var ids []uint8
@@ -103,7 +104,7 @@ func main() {
 			}
 			ids = append(ids, uint8(id))
 		}
-		err = crud.UnmarkToDos(filename, ids)
+		err = tgfuncs.UnmarkToDos(filename, ids)
 		if err != nil {
 			fmt.Println("Error unmarking todo:", err)
 		} else {
@@ -111,36 +112,36 @@ func main() {
 		}
 
 	case "list", "ls":
-		err := crud.ListToDos(filename)
+		err := tgfuncs.ListToDos(filename)
 		if err != nil {
 			fmt.Println("Error listing todos:", err)
 		}
 
 	case "search", "s":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: todo search [keyword]")
+			fmt.Println("Usage: tgfuncs search [keyword]")
 			return
 		}
 		keyword := os.Args[2]
-		err := crud.SearchToDos(filename, keyword)
+		err := tgfuncs.SearchToDos(filename, keyword)
 		if err != nil {
 			fmt.Println("Error searching todos:", err)
 		}
 
 	case "sort":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: todo sort [by_date|by_status]")
+			fmt.Println("Usage: tgfuncs sort [by_date|by_status]")
 			return
 		}
 		criteria := os.Args[2]
-		err := crud.SortToDos(filename, criteria)
+		err := tgfuncs.SortToDos(filename, criteria)
 		if err != nil {
 			fmt.Println("Error sorting todos:", err)
 		}
 
 	case "delete", "d":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: todo delete [id1 id2 ...]")
+			fmt.Println("Usage: tgfuncs delete [id1 id2 ...]")
 			return
 		}
 		var ids []uint8
@@ -152,7 +153,7 @@ func main() {
 			}
 			ids = append(ids, uint8(id))
 		}
-		err = crud.DeleteToDos(filename, ids)
+		err = tgfuncs.DeleteToDos(filename, ids)
 		if err != nil {
 			fmt.Println("Error deleting todos:", err)
 		} else {
@@ -161,6 +162,6 @@ func main() {
 
 	default:
 		fmt.Println("Unknown command:", command)
-		utils.PrintHelp()
+		tgfuncs.PrintHelp()
 	}
 }
