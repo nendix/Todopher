@@ -1,4 +1,4 @@
-# GoToDo
+# TaskGopher
 
 A simple file-based todo manager written in Go
 
