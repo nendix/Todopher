@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-// MarkToDo segna un'attività come completata nel file specificato
-func UnmarkToDo(filename string, id uint8) error {
+// UnmarkToDos deseleziona più attività nel file specificato
+func UnmarkToDos(filename string, ids []uint8) error {
 	// Leggi il contenuto del file
 	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
 	if err != nil {
@@ -27,17 +27,28 @@ func UnmarkToDo(filename string, id uint8) error {
 		return err
 	}
 
-	// Trova e aggiorna la riga corrispondente all'ID
+	// Crea un set di ID per una verifica rapida
+	idSet := make(map[uint8]struct{})
+	for _, id := range ids {
+		idSet[id] = struct{}{}
+	}
+
+	// Trova e aggiorna le righe corrispondenti agli ID
 	var updatedLines []string
 	for _, line := range lines {
-		fields := strings.Fields(line)
-		if len(fields) >= 4 {
-			lineID, err := strconv.ParseUint(fields[0], 10, 8)
-			if err == nil && uint8(lineID) == id {
-				// Sostituisci [ ] con [X]
-				line = strings.Replace(line, "[X]", "[ ]", 1)
-			}
+		lineIDStr := strings.Fields(line)[0]
+		lineID, err := strconv.ParseUint(lineIDStr, 10, 8)
+		if err != nil {
+			updatedLines = append(updatedLines, line)
+			continue
 		}
+
+		// Controlla se l'ID è nella lista degli ID da deselezionare
+		if _, found := idSet[uint8(lineID)]; found {
+			// Sostituisci [X] con [ ]
+			line = strings.Replace(line, "[X]", "[ ]", 1)
+		}
+
 		updatedLines = append(updatedLines, line)
 	}
 

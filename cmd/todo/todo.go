@@ -54,12 +54,16 @@ func main() {
 			fmt.Println("Usage: todo mark [id]")
 			return
 		}
-		id, err := strconv.ParseUint(os.Args[2], 10, 8)
-		if err != nil {
-			fmt.Println("Invalid ID format:", err)
-			return
+		var ids []uint8
+		for _, idStr := range os.Args[2:] {
+			id, err := strconv.ParseUint(idStr, 10, 8)
+			if err != nil {
+				fmt.Println("Invalid ID format:", err)
+				return
+			}
+			ids = append(ids, uint8(id))
 		}
-		err = crud.MarkToDo(filename, uint8(id))
+		err = crud.MarkToDos(filename, ids)
 		if err != nil {
 			fmt.Println("Error marking todo:", err)
 		} else {
@@ -68,15 +72,19 @@ func main() {
 
 	case "unmark", "u":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: todo unmark [id]")
+			fmt.Println("Usage: todo unmark [id1 id2 ...]")
 			return
 		}
-		id, err := strconv.ParseUint(os.Args[2], 10, 8)
-		if err != nil {
-			fmt.Println("Invalid ID format:", err)
-			return
+		var ids []uint8
+		for _, idStr := range os.Args[2:] {
+			id, err := strconv.ParseUint(idStr, 10, 8)
+			if err != nil {
+				fmt.Println("Invalid ID format:", err)
+				return
+			}
+			ids = append(ids, uint8(id))
 		}
-		err = crud.UnmarkToDo(filename, uint8(id))
+		err = crud.UnmarkToDos(filename, ids)
 		if err != nil {
 			fmt.Println("Error unmarking todo:", err)
 		} else {
