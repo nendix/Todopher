@@ -8,14 +8,14 @@ A simple file-based todo manager written in Go
 
 #### Commands:
 
-- **add** [todo] [dd-mm-yy] - Add a new todo
-- **edit** [id] [new todo] [new dd-mm-yy] - Edit a todo
-- **mark** [id1 id2 ...] - Mark todos as completed
-- **unmark** [id1 id2 ...] - Unmark todos as not completed
-- **list** - List all todos
-- **search** [key_word] - List all todos that contain the keyword
-- **sort** [id] [by_status|by_date] - Sort todos by status or by date
-- **delete** [id1 id2 ...] - Delete todos
+- **add** [todo] [dd-mm-yy] _- Add a new todo_
+- **edit** [id] [new todo] [new dd-mm-yy] _- Edit a todo_
+- **mark** [id1 id2 ...] _- Mark todos as completed_
+- **unmark** [id1 id2 ...] _- Unmark todos as not completed_
+- **list** _- List all todos_
+- **search** [key_word] _- List all todos that contain the keyword_
+- **sort** [id] [by_status|by_date] _- Sort todos by status or by date_
+- **delete** [id1 id2 ...] _- Delete todos_
 
 #### NOTE:
 
