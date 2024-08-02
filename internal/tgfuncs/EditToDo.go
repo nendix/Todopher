@@ -39,9 +39,7 @@ func EditToDo(filename string, id uint8, newTodo string, newDate string) error {
 				fields[1] = "[ ]" // Rimuovi il marcatura esistente
 				// La data di scadenza può essere nell'ultimo campo, ma assicurati di avere un formato corretto
 				if len(fields) >= 4 {
-					line = fmt.Sprintf("%03d %s %s %s", id, fields[1], newTodo, newDate)
-				} else {
-					line = fmt.Sprintf("%03d %s %s %s", id, fields[1], newTodo, newDate)
+					line = fmt.Sprintf("%03d %s %s for %s", id, fields[1], newTodo, newDate)
 				}
 			}
 		}

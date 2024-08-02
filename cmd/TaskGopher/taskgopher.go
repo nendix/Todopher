@@ -18,7 +18,7 @@ func main() {
 		return
 	}
 
-	// Costruisci il percorso completo per il file nella home directory
+	// Costruisci il percorso completo per il filename nella home directory
 	filename := filepath.Join(homeDir, "todo", "todos.txt")
 
 	// Crea il file se non esiste
@@ -38,9 +38,10 @@ func main() {
 	switch command {
 	case "help":
 		tgfuncs.Help()
+
 	case "add", "a":
 		if len(os.Args) < 4 {
-			fmt.Println("Usage: tgfuncs add [todo] [dd-mm-yy]")
+			fmt.Println("Usage: tg add [todo] [dd-mm-yy]")
 			return
 		}
 		label := os.Args[2]
@@ -51,9 +52,10 @@ func main() {
 		} else {
 			fmt.Println("Todo added successfully.")
 		}
+
 	case "edit", "e":
 		if len(os.Args) < 5 {
-			fmt.Println("Usage: tgfuncs edit [id] [new task] [new dd-mm-yy]")
+			fmt.Println("Usage: tg edit [id] [new task] [new dd-mm-yy]")
 			return
 		}
 		id, err := strconv.ParseUint(os.Args[2], 10, 8)
@@ -69,9 +71,10 @@ func main() {
 		} else {
 			fmt.Println("Todo edited successfully.")
 		}
+
 	case "mark", "m":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: tgfuncs mark [id]")
+			fmt.Println("Usage: tg mark [id]")
 			return
 		}
 		var ids []uint8
@@ -92,7 +95,7 @@ func main() {
 
 	case "unmark", "u":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: tgfuncs unmark [id1 id2 ...]")
+			fmt.Println("Usage: tg unmark [id1 id2 ...]")
 			return
 		}
 		var ids []uint8
@@ -119,7 +122,7 @@ func main() {
 
 	case "search", "s":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: tgfuncs search [keyword]")
+			fmt.Println("Usage: tg search [keyword]")
 			return
 		}
 		keyword := os.Args[2]
@@ -130,7 +133,7 @@ func main() {
 
 	case "sort":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: tgfuncs sort [by_date|by_status]")
+			fmt.Println("Usage: tg sort [by_date|by_status]")
 			return
 		}
 		criteria := os.Args[2]
@@ -141,7 +144,7 @@ func main() {
 
 	case "delete", "d":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: tgfuncs delete [id1 id2 ...]")
+			fmt.Println("Usage: tg delete [id1 id2 ...]")
 			return
 		}
 		var ids []uint8
