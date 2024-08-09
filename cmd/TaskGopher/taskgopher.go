@@ -74,7 +74,7 @@ func main() {
 
 	case "mark", "m":
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: tg mark [id]")
+			fmt.Println("Usage: tg mark [id1 id2 ...]")
 			return
 		}
 		var ids []uint8
