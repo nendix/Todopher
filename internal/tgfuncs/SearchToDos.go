@@ -9,9 +9,9 @@ import (
 )
 
 // SearchToDos cerca nel file specificato le righe che contengono la parola chiave
-func SearchToDos(filename, keyword string) error {
+func SearchToDos(filePath, keyword string) error {
 	// Leggi il contenuto del file
-	file, err := os.Open(filename)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return err
 	}

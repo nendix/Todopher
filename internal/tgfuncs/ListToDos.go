@@ -4,11 +4,18 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"github.com/nendix/TaskGopher/internal/utils"
 )
 
 // ListToDos stampa la lista di tutti i todo dal file specificato
-func ListToDos(filename string) error {
-	file, err := os.Open(filename)
+func ListToDos(filePath string) error {
+	listName, err := utils.ReadCurrentList()
+
+	if listName != "" {
+		fmt.Println("List:", listName)
+	}
+	file, err := os.Open(filePath)
 	if err != nil {
 		return err
 	}

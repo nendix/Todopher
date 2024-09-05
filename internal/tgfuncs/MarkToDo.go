@@ -9,9 +9,9 @@ import (
 )
 
 // UnmarkToDos deseleziona più attività nel file specificato
-func MarkToDos(filename string, ids []uint8) error {
+func MarkToDos(filePath string, ids []uint8) error {
 	// Leggi il contenuto del file
-	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
+	file, err := os.OpenFile(filePath, os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func MarkToDos(filename string, ids []uint8) error {
 	}
 
 	// Scrivi il contenuto aggiornato nel file
-	file, err = os.OpenFile(filename, os.O_TRUNC|os.O_RDWR, 0666)
+	file, err = os.OpenFile(filePath, os.O_TRUNC|os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}

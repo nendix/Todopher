@@ -7,16 +7,16 @@ import (
 )
 
 // AddToDo aggiunge un nuovo todo al file specificato
-func AddToDo(filename, todo, date string) error {
+func AddToDo(filePath, todo, date string) error {
 	// Apri il file in modalità append e crea il file se non esiste
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
 	// Ottieni l'ID dell'ultimo todo
-	lastID, err := readLastID(filename)
+	lastID, err := readLastID(filePath)
 	if err != nil {
 		return err
 	}
@@ -33,8 +33,8 @@ func AddToDo(filename, todo, date string) error {
 }
 
 // readLastID legge l'ultimo ID usato dal file
-func readLastID(filename string) (uint8, error) {
-	file, err := os.Open(filename)
+func readLastID(filePath string) (uint8, error) {
+	file, err := os.Open(filePath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return 0, nil // Se il file non esiste, ritorna 0

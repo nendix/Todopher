@@ -9,9 +9,9 @@ import (
 )
 
 // DeleteToDos elimina una lista di attività dal file specificato
-func DeleteToDos(filename string, ids []uint8) error {
+func DeleteToDos(filePath string, ids []uint8) error {
 	// Leggi il contenuto del file
-	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
+	file, err := os.OpenFile(filePath, os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func DeleteToDos(filename string, ids []uint8) error {
 	}
 
 	// Riscrivi il file con il contenuto aggiornato
-	file, err = os.OpenFile(filename, os.O_TRUNC|os.O_RDWR, 0666)
+	file, err = os.OpenFile(filePath, os.O_TRUNC|os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}

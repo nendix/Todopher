@@ -10,9 +10,9 @@ import (
 )
 
 // SortToDos ordina le attività nel file specificato per data o stato e riassegna gli ID
-func SortToDos(filename, criteria string) error {
+func SortToDos(filePath, criteria string) error {
 	// Leggi il contenuto del file
-	file, err := os.OpenFile(filename, os.O_RDWR, 0666)
+	file, err := os.OpenFile(filePath, os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func SortToDos(filename, criteria string) error {
 	}
 
 	// Scrivi il contenuto aggiornato nel file
-	file, err = os.OpenFile(filename, os.O_TRUNC|os.O_RDWR, 0666)
+	file, err = os.OpenFile(filePath, os.O_TRUNC|os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}
