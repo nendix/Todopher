@@ -35,7 +35,6 @@ func saveCurrentFile(listName string) error {
 		return fmt.Errorf("failed to update .env file: %v", err)
 	}
 
-	fmt.Println("Updated .env file with TODO_FILE =", listName)
 	return nil
 }
 

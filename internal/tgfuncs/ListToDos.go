@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/nendix/TaskGopher/internal/utils"
 )
@@ -11,6 +13,12 @@ import (
 // ListToDos stampa la lista di tutti i todo dal file specificato
 func ListToDos(filePath string) error {
 	listName, err := utils.ReadCurrentList()
+	if err != nil {
+		return fmt.Errorf("error reading current list: %v", err)
+	}
+
+	// Rimuovi l'estensione .txt dal nome del file
+	listName = strings.TrimSuffix(listName, filepath.Ext(listName))
 
 	if listName != "" {
 		fmt.Println("List:", listName)

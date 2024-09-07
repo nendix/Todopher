@@ -59,7 +59,7 @@ func main() {
 			if err != nil {
 				fmt.Println("Error setting the list:", err)
 			} else {
-				fmt.Println("List set to:", newFile+".txt")
+				fmt.Println("List set to:", newFile)
 			}
 
 		case "add", "a":
