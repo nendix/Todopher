@@ -4,39 +4,34 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/nendix/TaskGopher/internal/utils"
 )
 
 const (
-	todoDirName         = "todo"
-	currentTodoFileName = "CURRENT_TODO_FILE.txt"
-	initialFileName     = "todos.txt"
+	todoDirName     = "todo"
+	envFileName     = ".env"
+	initialFileName = "todos.txt"
 )
 
-// Init crea la cartella ~/todo e il file ~/todo/CURRENT_TODO_FILE.txt con il contenuto todos.txt
+// Init crea la cartella ~/todo e il file ~/todo/.env con la variabile TODO_FILE=todos.txt
 func Init() error {
-	// Ottieni la home directory dell'utente
-	homeDir, err := os.UserHomeDir()
+	// Costruisci il percorso della cartella todo e del file .env
+	todoDirPath, err := utils.GetTodoDir()
 	if err != nil {
-		return fmt.Errorf("error getting home directory: %w", err)
+		return fmt.Errorf("error getting todo directory: %w", err)
 	}
+	envFilePath := filepath.Join(todoDirPath, envFileName)
 
-	// Costruisci il percorso della cartella todo e del file CURRENT_TODO_FILE.txt
-	todoDir := filepath.Join(homeDir, todoDirName)
-	currentTodoFilePath := filepath.Join(todoDir, currentTodoFileName)
-
-	// Debug: Stampa il percorso della directory e verifica se esiste
-	fmt.Printf("Attempting to create directory at: %s\n", todoDir)
-
-	// Controlla se esiste già una directory o un file con il nome todoDir
-	info, err := os.Stat(todoDir)
+	// Controlla se la cartella todo esiste, altrimenti la crea
+	info, err := os.Stat(todoDirPath)
 	if err == nil {
 		if !info.IsDir() {
-			return fmt.Errorf("file exists with the name '%s', but it's not a directory", todoDir)
+			return fmt.Errorf("file exists with the name '%s', but it's not a directory", todoDirPath)
 		}
 		fmt.Println("Directory already exists.")
 	} else if os.IsNotExist(err) {
-		// Se non esiste, crea la cartella todo
-		err = os.MkdirAll(todoDir, 0755)
+		err = os.MkdirAll(todoDirPath, 0755)
 		if err != nil {
 			return fmt.Errorf("error creating todo directory: %w", err)
 		}
@@ -45,24 +40,24 @@ func Init() error {
 		return fmt.Errorf("error checking todo directory: %w", err)
 	}
 
-	// Crea il file CURRENT_TODO_FILE.txt se non esiste
-	_, err = os.Stat(currentTodoFilePath)
+	// Crea il file .env se non esiste
+	_, err = os.Stat(envFilePath)
 	if os.IsNotExist(err) {
-		file, err := os.Create(currentTodoFilePath)
+		file, err := os.Create(envFilePath)
 		if err != nil {
-			return fmt.Errorf("error creating current todo file: %w", err)
+			return fmt.Errorf("error creating .env file: %w", err)
 		}
 		defer file.Close()
 
-		// Scrivi il nome del file iniziale todos.txt nel file CURRENT_TODO_FILE.txt
-		_, err = file.WriteString(initialFileName)
+		// Scrivi la variabile d'ambiente TODO_FILE=todos.txt
+		_, err = file.WriteString("TODO_FILE=" + initialFileName + "\n")
 		if err != nil {
-			return fmt.Errorf("error writing to current todo file: %w", err)
+			return fmt.Errorf("error writing to .env file: %w", err)
 		}
-		fmt.Println("File created and initialized successfully.")
+		fmt.Println("File .env created and initialized successfully.")
 	} else if err != nil {
-		return fmt.Errorf("error checking current todo file: %w", err)
+		return fmt.Errorf("error checking .env file: %w", err)
 	}
 
-	return nil // Se tutto è andato bene, non restituisce errore
+	return nil
 }

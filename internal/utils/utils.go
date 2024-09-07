@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/joho/godotenv"
 )
 
 func CreateFileIfNotExists(filename string) (bool, error) {
@@ -33,29 +35,29 @@ func GetTodoDir() (string, error) {
 	return filepath.Join(homeDir, "todo"), nil
 }
 
-func GetConfigFilePath() (string, error) {
+func GetEnvFilePath() (string, error) {
 	todoDir, err := GetTodoDir()
 	if err != nil {
 		return "", err
 	}
 
-	configFilePath := filepath.Join(todoDir, "CURRENT_TODO_FILE.txt")
-	// Check if CURRENT_TODO_FILE.txt exists
+	configFilePath := filepath.Join(todoDir, ".env")
+	// Check if .env exists
 	if _, err := os.Stat(configFilePath); os.IsNotExist(err) {
-		return "", fmt.Errorf("CURRENT_TODO_FILE.txt does not exist")
+		return "", fmt.Errorf(".env does not exist")
 	}
 
 	return configFilePath, nil
 }
 
-// Function to ensure CURRENT_TODO_FILE.txt exists and contains todos.txt
-func ensureCurrentFile() error {
-	configFilePath, err := GetConfigFilePath()
+// Function to ensure .env exists and contains todos.txt
+func ensureEnvFile() error {
+	configFilePath, err := GetEnvFilePath()
 	if err != nil {
 		return err
 	}
 
-	// Check if CURRENT_TODO_FILE.txt exists
+	// Check if .env exists
 	if _, err := os.Stat(configFilePath); os.IsNotExist(err) {
 		// If it doesn't exist, create it and write 'todos.txt'
 		err := os.WriteFile(configFilePath, []byte("todos.txt"), 0644)
@@ -67,19 +69,25 @@ func ensureCurrentFile() error {
 	return nil
 }
 
-// Function to read the current todo file from CURRENT_TODO_FILE.txt
+// ReadCurrentList legge il file .env e restituisce il valore di TODO_FILE
 func ReadCurrentList() (string, error) {
-	configFilePath, err := GetConfigFilePath()
+	todoDir, err := GetTodoDir()
 	if err != nil {
 		return "", err
 	}
 
-	// Read the content of CURRENT_TODO_FILE.txt
-	content, err := os.ReadFile(configFilePath)
+	// Carica il file .env
+	envFilePath := filepath.Join(todoDir, ".env")
+	err = godotenv.Load(envFilePath)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error loading .env file: %w", err)
 	}
 
-	// Return the filename as a string (removing any trailing newline characters)
-	return string(content), nil
+	// Ottieni la variabile d'ambiente TODO_FILE
+	fileName := os.Getenv("TODO_FILE")
+	if fileName == "" {
+		return "", fmt.Errorf("TODO_FILE not set in .env file")
+	}
+
+	return fileName, nil
 }

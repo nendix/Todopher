@@ -23,7 +23,7 @@ func main() {
 		return
 
 	case "init":
-		// Esegui il comando init per creare la cartella ~/todo e il file CURRENT_TODO_FILE.txt
+		// Esegui il comando init per creare la cartella ~/todo e il file .env
 		err := tgfuncs.Init()
 		if err != nil {
 			fmt.Println("Error initializing:", err)
@@ -45,7 +45,9 @@ func main() {
 			return
 		}
 		filePath := filepath.Join(todoDir, fileName)
+
 		switch command {
+
 		case "setlist", "sl":
 			if len(os.Args) < 3 {
 				fmt.Println("Usage: tg setlist [listname]")
@@ -59,6 +61,7 @@ func main() {
 			} else {
 				fmt.Println("List set to:", newFile+".txt")
 			}
+
 		case "add", "a":
 			if len(os.Args) < 4 {
 				fmt.Println("Usage: tg add [todo] [dd-mm-yy]")

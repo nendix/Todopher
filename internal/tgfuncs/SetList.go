@@ -5,28 +5,41 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/joho/godotenv"
 	"github.com/nendix/TaskGopher/internal/utils"
 )
 
-// Function to get the path of the configuration file
-
-// Function to save the current file in the configuration
+// saveCurrentFile salva il nome della lista corrente nel file .env
 func saveCurrentFile(listName string) error {
-	configFile, err := utils.GetConfigFilePath()
+	// Ottieni il percorso della directory todo
+	todoDir, err := utils.GetTodoDir()
 	if err != nil {
-		return err
+		return fmt.Errorf("error getting todo directory: %v", err)
 	}
 
-	// Write the filename to the config file
-	err = os.WriteFile(configFile, []byte(listName), 0644)
-	if err != nil {
-		return err
+	// Percorso del file .env
+	envFilePath := filepath.Join(todoDir, ".env")
+
+	// Carica le variabili d'ambiente dal file .env esistente
+	envMap, err := godotenv.Read(envFilePath)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to read .env file: %v", err)
 	}
 
+	// Aggiorna la variabile TODO_FILE con il nome della nuova lista
+	envMap["TODO_FILE"] = listName
+
+	// Scrivi nuovamente il file .env aggiornato
+	err = godotenv.Write(envMap, envFilePath)
+	if err != nil {
+		return fmt.Errorf("failed to update .env file: %v", err)
+	}
+
+	fmt.Println("Updated .env file with TODO_FILE =", listName)
 	return nil
 }
 
-// Function to check if the file exists in ~/todo/ or create it
+// SetList verifica se il file della lista esiste in ~/todo/ o lo crea
 func SetList(listName string) error {
 	// Ottieni la directory ~/todo
 	todoDir, err := utils.GetTodoDir()
@@ -43,10 +56,10 @@ func SetList(listName string) error {
 		fmt.Println("Todo directory created successfully.")
 	}
 
-	// Aggiorna il file di configurazione con il nome del nuovo file
+	// Aggiorna il file .env con il nome del nuovo file della lista
 	err = saveCurrentFile(listName + ".txt")
 	if err != nil {
-		return fmt.Errorf("failed to update config: %v", err)
+		return fmt.Errorf("failed to update .env file: %v", err)
 	}
 
 	// Verifica se il file della lista esiste, se no, crealo
@@ -58,12 +71,9 @@ func SetList(listName string) error {
 			return fmt.Errorf("failed to create todo list file: %v", err)
 		}
 		defer file.Close()
-		fmt.Printf("Todo list '%s' created successfully.\n", listName+".txt")
+		fmt.Printf("Todo list '%s' created successfully.\n", listName)
 	} else if err != nil {
 		return fmt.Errorf("error checking todo list file: %v", err)
-	} else {
-		fmt.Printf("Todo list '%s' already exists.\n", listName+".txt")
 	}
-
 	return nil
 }
