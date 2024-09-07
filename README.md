@@ -7,7 +7,9 @@ A simple file-based todo manager written in Go
 **tg** [command] [options] <br>
 
 #### Commands:
-
+- **help** _- Print the cmd list_
+- **init** _- Initialize the enviroment_
+- **setlist** [listname] _- Change the todo list_
 - **add** [todo] [dd-mm-yy] _- Add a new todo_
 - **edit** [id] [new todo] [new dd-mm-yy] _- Edit a todo_
 - **mark** [id1 id2 ...] _- Mark todos as completed_
@@ -19,5 +21,7 @@ A simple file-based todo manager written in Go
 
 #### NOTE:
 
-TaskGopher saves the todos in _your_home_dir_/todo/todos.txt <br>
-To change the default saving path and file name you have to modify the **filename variable** inside the **todo.go** file with your desired path and filename.
+TaskGopher saves the todos in *HOME_DIR/todo* and uses a *.env* file that stores the current todo list<br>
+To **setup the enviroment** you need to run: `tg init` and then `tg setlist todos`.<br>
+To **delete a list or change his name** you can use your system file manager or terminal commands,
+just remember to update the *.env* file with `tg setlist [new_list_name]`.
