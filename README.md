@@ -9,8 +9,8 @@ A simple file-based todo manager written in Go
 #### Commands:
 
 - **help** _- Print the cmd list_
-- **init** _- Initialize the enviroment_
-- **setlist** [listname] _- Change the todo list_
+- **init** _- Initialize enviroment_
+- **setlist** [listname] _- Change todo list_
 - **add** [todo] [dd-mm-yy] _- Add a new todo_
 - **edit** [id] [new todo] [new dd-mm-yy] _- Edit a todo_
 - **mark** [id1 id2 ...] _- Mark todos as completed_

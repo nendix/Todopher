@@ -4,9 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
-// AddToDo aggiunge un nuovo todo al file specificato
+// AddToDo aggiunge un nuovo todo in formato Markdown al file specificato
 func AddToDo(filePath, todo, date string) error {
 	// Apri il file in modalità append e crea il file se non esiste
 	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
@@ -23,8 +24,8 @@ func AddToDo(filePath, todo, date string) error {
 
 	newID := lastID + 1
 
-	// Scrivi il nuovo todo
-	_, err = fmt.Fprintf(file, "%03d [ ] %s for %s\n", newID, todo, date)
+	// Scrivi il nuovo todo nel formato Markdown
+	_, err = fmt.Fprintf(file, "- [ ] %03d %s for %s\n", newID, todo, date)
 	if err != nil {
 		return err
 	}
@@ -32,7 +33,7 @@ func AddToDo(filePath, todo, date string) error {
 	return nil
 }
 
-// readLastID legge l'ultimo ID usato dal file
+// readLastID legge l'ultimo ID usato dal file Markdown
 func readLastID(filePath string) (uint8, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -47,8 +48,10 @@ func readLastID(filePath string) (uint8, error) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
+
 		var id uint8
-		_, err := fmt.Sscanf(line, "%d ", &id)
+		// Qui controlliamo sia il caso di "- [ ]" che di "- [x]"
+		_, err := fmt.Sscanf(line, "- [%*1s] %d", &id)
 		if err == nil {
 			lastID = id
 		}
