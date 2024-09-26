@@ -27,7 +27,7 @@ func CreateFileIfNotExists(filename string) (bool, error) {
 }
 
 // Function to get the path of the todo directory
-func GetTodoDir() (string, error) {
+func GetToDoDir() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
@@ -36,7 +36,7 @@ func GetTodoDir() (string, error) {
 }
 
 func GetEnvFilePath() (string, error) {
-	todoDir, err := GetTodoDir()
+	todoDir, err := GetToDoDir()
 	if err != nil {
 		return "", err
 	}
@@ -71,7 +71,7 @@ func ensureEnvFile() error {
 
 // ReadCurrentList legge il file .env e restituisce il valore di TODO_FILE
 func ReadCurrentList() (string, error) {
-	todoDir, err := GetTodoDir()
+	todoDir, err := GetToDoDir()
 	if err != nil {
 		return "", err
 	}

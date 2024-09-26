@@ -46,7 +46,7 @@ func MarkToDos(filePath string, ids []uint8) error {
 		// Controlla se l'ID è nella lista degli ID da deselezionare
 		if _, found := idSet[uint8(lineID)]; found {
 			// Sostituisci [X] con [ ]
-			line = strings.Replace(line, "[ ]", "[X]", 1)
+			line = strings.Replace(line, "[ ]", "[✓]", 1)
 		}
 
 		updatedLines = append(updatedLines, line)

@@ -33,7 +33,7 @@ func main() {
 		return
 
 	default:
-		todoDir, err := utils.GetTodoDir()
+		todoDir, err := utils.GetToDoDir()
 		if err != nil {
 			fmt.Println("Error getting todo dir:", err)
 			return

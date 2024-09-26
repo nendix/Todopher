@@ -24,7 +24,7 @@ func AddToDo(filePath, todo, date string) error {
 	newID := lastID + 1
 
 	// Scrivi il nuovo todo
-	_, err = fmt.Fprintf(file, "%03d [ ] %s for %s\n", newID, todo, date)
+	_, err = fmt.Fprintf(file, "%03d [ ] %s | %s\n", newID, todo, date)
 	if err != nil {
 		return err
 	}
