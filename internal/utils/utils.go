@@ -50,25 +50,6 @@ func GetEnvFilePath() (string, error) {
 	return configFilePath, nil
 }
 
-// Function to ensure .env exists and contains todos.txt
-func ensureEnvFile() error {
-	configFilePath, err := GetEnvFilePath()
-	if err != nil {
-		return err
-	}
-
-	// Check if .env exists
-	if _, err := os.Stat(configFilePath); os.IsNotExist(err) {
-		// If it doesn't exist, create it and write 'todos.txt'
-		err := os.WriteFile(configFilePath, []byte("todos.txt"), 0644)
-		if err != nil {
-			return fmt.Errorf("failed to create file %s: %v", configFilePath, err)
-		}
-	}
-
-	return nil
-}
-
 // ReadCurrentList legge il file .env e restituisce il valore di TODO_FILE
 func ReadCurrentList() (string, error) {
 	todoDir, err := GetToDoDir()
