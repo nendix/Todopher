@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strconv"
 
-	tgfuncs "github.com/nendix/TaskGopher/internal/tgfuncs"
+	"github.com/nendix/TaskGopher/internal/tgfuncs"
 	"github.com/nendix/TaskGopher/internal/utils"
 )
 
@@ -156,7 +156,7 @@ func main() {
 
 		case "sort":
 			if len(os.Args) < 3 {
-				fmt.Println("Usage: tg sort [by_date|by_status]")
+				fmt.Println("Usage: tg sort [date|status]")
 				return
 			}
 			criteria := os.Args[2]
