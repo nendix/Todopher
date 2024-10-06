@@ -1,39 +1,34 @@
 package tgfuncs
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
-	"os"
 	"strings"
+
+	utils "github.com/nendix/TaskGopher/internal/utils"
 )
 
-// SearchToDos cerca nel file specificato le righe che contengono la parola chiave
+// SearchToDos searches for todos containing the specified keyword in the given file.
 func SearchToDos(filePath, keyword string) error {
-	// Leggi il contenuto del file
-	file, err := os.Open(filePath)
+	// Read all ToDos from the file using the helper function.
+	todos, err := utils.ReadAllToDos(filePath)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to read todos: %v", err)
 	}
-	defer file.Close()
 
-	// Cerca la parola chiave in ogni riga del file
-	scanner := bufio.NewScanner(file)
+	// Flag to check if any ToDo matches the keyword.
 	found := false
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.Contains(line, keyword) {
-			fmt.Println(line)
+
+	// Iterate through each ToDo and check if the Description contains the keyword.
+	for _, todo := range todos {
+		if strings.Contains(strings.ToLower(todo.Description), strings.ToLower(keyword)) {
+			fmt.Println(todo.String())
 			found = true
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		return err
-	}
-
 	if !found {
-		return errors.New("No todos found with the given keyword.")
+		return errors.New("no todos found with the given keyword")
 	}
 
 	return nil

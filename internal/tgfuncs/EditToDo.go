@@ -1,63 +1,54 @@
 package tgfuncs
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strconv"
 	"strings"
+
+	utils "github.com/nendix/TaskGopher/internal/utils"
 )
 
-// EditToDo modifica il testo e/o la data di scadenza di un'attività
+// EditToDo modifies the description and/or due date of a todo with the specified ID.
 func EditToDo(filePath string, id uint8, newTodo string, newDate string) error {
-	// Leggi il contenuto del file
-	file, err := os.OpenFile(filePath, os.O_RDWR, 0666)
+	// Read all ToDos from the file.
+	todos, err := utils.ReadAllToDos(filePath)
 	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		return fmt.Errorf("failed to read todos: %v", err)
 	}
 
-	if err := scanner.Err(); err != nil {
-		return err
-	}
+	// Flag to check if the todo with the specified ID exists.
+	found := false
 
-	// Trova e aggiorna la riga corrispondente all'ID
-	var updatedLines []string
-	for _, line := range lines {
-		// Trova e aggiorna la riga corrispondente all'ID
-		fields := strings.Fields(line)
-		if len(fields) >= 4 {
-			lineID, err := strconv.ParseUint(fields[0], 10, 8)
-			if err == nil && uint8(lineID) == id {
-				// Costruisci la nuova riga con il testo e/o la data di scadenza modificati
-				fields[1] = "[ ]" // Rimuovi il marcatura esistente
-				// La data di scadenza può essere nell'ultimo campo, ma assicurati di avere un formato corretto
-				if len(fields) >= 4 {
-					line = fmt.Sprintf("%03d %s %s | %s", id, fields[1], newTodo, newDate)
-				}
+	// Iterate through the todos to find and update the specified one.
+	for i, todo := range todos {
+		if todo.ID == id {
+			found = true
+
+			// Update the description if a new one is provided.
+			if strings.TrimSpace(newTodo) != "" {
+				todos[i].Description = newTodo
 			}
+
+			// Update the date if a new one is provided.
+			if strings.TrimSpace(newDate) != "" {
+				parsedDate, err := utils.ParseDate(newDate)
+				if err != nil {
+					return fmt.Errorf("failed to parse new date: %v", err)
+				}
+				todos[i].Date = parsedDate
+			}
+
+			break
 		}
-		updatedLines = append(updatedLines, line)
 	}
 
-	// Scrivi il contenuto aggiornato nel file
-	file, err = os.OpenFile(filePath, os.O_TRUNC|os.O_RDWR, 0666)
+	if !found {
+		return fmt.Errorf("todo with ID %03d not found", id)
+	}
+
+	// Write the updated ToDos back to the file.
+	err = utils.WriteAllToDos(filePath, todos)
 	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	for _, line := range updatedLines {
-		_, err := fmt.Fprintln(file, line)
-		if err != nil {
-			return err
-		}
+		return fmt.Errorf("failed to write updated todos: %v", err)
 	}
 
 	return nil

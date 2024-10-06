@@ -1,69 +1,46 @@
 package tgfuncs
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
+
+	utils "github.com/nendix/TaskGopher/internal/utils"
 )
 
-// UnmarkToDos deseleziona più attività nel file specificato
+// MarkToDos marks multiple todos as completed based on their IDs in the specified file.
 func MarkToDos(filePath string, ids []uint8) error {
-	// Leggi il contenuto del file
-	file, err := os.OpenFile(filePath, os.O_RDWR, 0666)
+	// Read all ToDos from the file using the helper function.
+	todos, err := utils.ReadAllToDos(filePath)
 	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		return fmt.Errorf("failed to read todos: %v", err)
 	}
 
-	if err := scanner.Err(); err != nil {
-		return err
-	}
-
-	// Crea un set di ID per una verifica rapida
+	// Create a set of IDs to mark for quick lookup.
 	idSet := make(map[uint8]struct{})
 	for _, id := range ids {
 		idSet[id] = struct{}{}
 	}
 
-	// Trova e aggiorna le righe corrispondenti agli ID
-	var updatedLines []string
-	for _, line := range lines {
-		lineIDStr := strings.Fields(line)[0]
-		lineID, err := strconv.ParseUint(lineIDStr, 10, 8)
-		if err != nil {
-			updatedLines = append(updatedLines, line)
-			continue
-		}
+	// Flag to check if at least one ToDo was marked.
+	marked := false
 
-		// Controlla se l'ID è nella lista degli ID da deselezionare
-		if _, found := idSet[uint8(lineID)]; found {
-			// Sostituisci [X] con [ ]
-			line = strings.Replace(line, "[ ]", "[✓]", 1)
+	// Iterate through the todos and mark the specified ones as completed.
+	for i, todo := range todos {
+		if _, exists := idSet[todo.ID]; exists {
+			if !todos[i].Completed {
+				todos[i].Completed = true
+				marked = true
+			}
 		}
-
-		updatedLines = append(updatedLines, line)
 	}
 
-	// Scrivi il contenuto aggiornato nel file
-	file, err = os.OpenFile(filePath, os.O_TRUNC|os.O_RDWR, 0666)
+	if !marked {
+		return fmt.Errorf("no matching todos found to mark")
+	}
+
+	// Write the updated ToDos back to the file.
+	err = utils.WriteAllToDos(filePath, todos)
 	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	for _, line := range updatedLines {
-		_, err := fmt.Fprintln(file, line)
-		if err != nil {
-			return err
-		}
+		return fmt.Errorf("failed to write updated todos: %v", err)
 	}
 
 	return nil
