@@ -6,13 +6,17 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/nendix/TaskGopher/cmd/tui"
 	"github.com/nendix/TaskGopher/internal/tgfuncs"
 	"github.com/nendix/TaskGopher/internal/utils"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		tgfuncs.Help()
+		if err := tui.StartTUI(); err != nil {
+			fmt.Println("Error launching TUI:", err)
+			os.Exit(1)
+		}
 		return
 	}
 

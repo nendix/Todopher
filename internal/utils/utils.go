@@ -72,3 +72,11 @@ func ReadCurrentList() (string, error) {
 
 	return fileName, nil
 }
+
+func GetToDoFilePath() (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(home, "todo", "todos.txt"), nil
+}
