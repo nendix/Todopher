@@ -12,10 +12,11 @@ func (m *Model) addTodo() {
 	// Get the value from the text input
 	inputValue := m.textInput.Value()
 
-	// Ensure input is in the format: "Description | DD/MM/YYYY"
-	parts := strings.SplitN(inputValue, "|", 2)
+	// Ensure input is in the format: "Description - DD/MM/YYYY"
+	parts := strings.SplitN(inputValue, "-", 2)
 	if len(parts) != 2 {
-		m.errMsg = "Invalid format. Use: Description | DD/MM/YYYY"
+		m.errMsg = "Invalid format. Use: Description - DD/MM/YYYY"
+		fmt.Println(m.errMsg) // Debug log
 		return
 	}
 
@@ -35,9 +36,11 @@ func (m *Model) addTodo() {
 	err = tgfuncs.AddToDo(m.filePath, description, dueDateStr)
 	if err != nil {
 		m.errMsg = fmt.Sprintf("Error adding todo: %v", err)
+		fmt.Println(m.errMsg) // Debug log
 	} else {
-		fmt.Println("Todo added successfully!") // Debug message
-		m.reloadTodos()                         // Reload the todos to reflect the new addition
+		m.reloadTodos()
+		m.state = ViewTodos
+		m.textInput = NewTextInput()
 	}
 }
 
@@ -104,16 +107,29 @@ func (m *Model) toggleMarkTodo() {
 
 func (m *Model) searchTodos(searchTerm string) {
 	var filtered []utils.ToDo
+
+	// Iterate through each todo and check if the description contains the keyword
 	for _, todo := range m.todos {
 		if strings.Contains(strings.ToLower(todo.Description), strings.ToLower(searchTerm)) {
 			filtered = append(filtered, todo)
 		}
 	}
-	m.filtered = filtered
+
+	// If no todos match the search term, set filtered to an empty list
+	if len(filtered) == 0 {
+		m.errMsg = "No todos match your search."
+		m.filtered = []utils.ToDo{}
+	} else {
+		m.filtered = filtered
+		m.errMsg = "" // Clear any previous error message
+	}
+
+	m.searchTerm = searchTerm // Store the search term for highlighting
 }
 
 // resetSearch clears the search filter
 func (m *Model) resetSearch() {
+	m.searchTerm = ""
 	m.filtered = m.todos
 }
 
@@ -134,4 +150,42 @@ func (m *Model) sortTodos(criteria string) {
 	// Update the model's todos and filtered list
 	m.todos = todos
 	m.filtered = todos
+}
+
+func (m *Model) toggleMarkFilteredTodo() {
+	if len(m.filtered) == 0 {
+		return
+	}
+
+	selectedTodo := m.filtered[m.cursor]
+
+	var err error
+	if selectedTodo.Completed {
+		err = tgfuncs.UnmarkToDos(m.filePath, []uint8{selectedTodo.ID})
+	} else {
+		err = tgfuncs.MarkToDos(m.filePath, []uint8{selectedTodo.ID})
+	}
+
+	if err != nil {
+		m.errMsg = "Error marking/unmarking todo: " + err.Error()
+	} else {
+		m.reloadTodos()
+		m.searchTodos(m.searchTerm) // Refresh the filtered list
+	}
+}
+
+func (m *Model) deleteFilteredTodo() {
+	if len(m.filtered) == 0 {
+		return
+	}
+
+	selectedTodo := m.filtered[m.cursor]
+	err := tgfuncs.DeleteToDos(m.filePath, []uint8{selectedTodo.ID})
+
+	if err != nil {
+		m.errMsg = "Error deleting todo: " + err.Error()
+	} else {
+		m.reloadTodos()
+		m.searchTodos(m.searchTerm) // Refresh the filtered list
+	}
 }

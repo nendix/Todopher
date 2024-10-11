@@ -9,6 +9,7 @@ type AppState int
 
 const (
 	ViewTodos AppState = iota
+	ViewFilteredTodos
 	AddTodo
 	EditTodo
 	DeleteTodo
@@ -19,14 +20,15 @@ const (
 )
 
 type Model struct {
-	todos     []utils.ToDo
-	filtered  []utils.ToDo
-	cursor    int
-	state     AppState
-	textInput TextInput
-	errMsg    string
-	filePath  string // To store the todos file path
-	sortType  string
+	todos      []utils.ToDo
+	filtered   []utils.ToDo
+	searchTerm string
+	cursor     int
+	state      AppState
+	textInput  TextInput
+	errMsg     string
+	filePath   string // To store the todos file path
+	sortType   string
 }
 
 // Init initializes the TUI model (required for tea.Model interface)

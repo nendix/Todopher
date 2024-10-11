@@ -3,6 +3,7 @@ package tui
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/nendix/TaskGopher/internal/utils"
@@ -29,11 +30,18 @@ func StartTUI() error {
 
 // initializeModel sets up the initial state of the TUI model
 func initializeModel() (Model, error) {
-	// Retrieve the file path for the todos file
-	filePath, err := utils.GetToDoFilePath()
+	todoDir, err := utils.GetToDoDir()
 	if err != nil {
-		return Model{}, fmt.Errorf("determining todo file path: %v", err)
+		fmt.Println("Error getting todo dir:", err)
+		return Model{}, err
 	}
+
+	fileName, err := utils.ReadCurrentList()
+	if err != nil {
+		fmt.Println("Error reading current list:", err)
+		return Model{}, err
+	}
+	filePath := filepath.Join(todoDir, fileName)
 
 	// Load the todos from the file
 	todos, err := utils.ReadAllToDos(filePath)

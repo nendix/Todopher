@@ -53,7 +53,7 @@ func (ti *TextInput) Update(msg tea.KeyMsg) {
 
 // View renders the text input with the cursor
 func (ti TextInput) View() string {
-	cursor := "|"
+	cursor := "_"
 	// Insert the cursor into the value at the correct position
 	return ti.value[:ti.cursor] + cursor + ti.value[ti.cursor:]
 }
