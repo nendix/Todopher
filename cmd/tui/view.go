@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/charmbracelet/lipgloss"
 	"github.com/nendix/TaskGopher/internal/utils"
 )
 
@@ -26,8 +25,6 @@ func (m Model) View() string {
 	}
 	return ""
 }
-
-var cursorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#fab387"))
 
 func (m Model) viewTodos() string {
 	if len(m.todos) == 0 {
@@ -54,7 +51,11 @@ func (m Model) viewTodos() string {
 			status = "[✓]"
 		}
 
-		s += fmt.Sprintf("%s %03d %s %s - %s\n", cursor, todo.ID, status, todo.Description, todo.Date.String())
+		todoIDStr := todoIDStyle.Render(fmt.Sprintf("%03d", todo.ID))
+		todoDesc := descriptionStyle.Render(todo.Description)
+		todoDate := dateStyle.Render(todo.Date.String())
+
+		s += fmt.Sprintf("%s %s %s %s - %s\n", cursor, todoIDStr, status, todoDesc, todoDate)
 	}
 
 	s += "\n(q)uit, (a)dd, (e)dit, (d)elete, (m)ark/unmark, (s)earch, s(o)rt."

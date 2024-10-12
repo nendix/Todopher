@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/charmbracelet/lipgloss"
 	"github.com/nendix/TaskGopher/internal/utils"
 )
 
@@ -17,7 +16,6 @@ func (m *Model) reloadTodos() {
 	}
 }
 
-var highlightStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#f38ba8")) // Red color
 func highlightSearchTerm(description, searchTerm string) string {
 	// Case-insensitive search
 	lowerDesc := strings.ToLower(description)
