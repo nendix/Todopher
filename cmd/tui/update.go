@@ -45,7 +45,7 @@ func (m *Model) updateViewTodos(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "e":
 		m.state = EditTodo
 		selectedTodo := m.todos[m.cursor]
-		m.textInput = NewTextInputWithValue(selectedTodo.Description + " | " + selectedTodo.Date.String())
+		m.textInput = NewTextInputWithValue(selectedTodo.Description + " - " + selectedTodo.Date.String())
 	case "d":
 		m.deleteTodo()
 	case "m":
@@ -77,8 +77,6 @@ func (m *Model) updateFilteredTodos(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "esc":
 			m.resetSearch()     // Clear the filter and reset to full todos
 			m.state = ViewTodos // Return to the full todos view
-		case "e":
-			m.state = EditTodo // Transition to edit state
 		case "m":
 			// Toggle mark/unmark the selected todo
 			m.toggleMarkFilteredTodo()

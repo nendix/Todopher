@@ -28,5 +28,5 @@ func (t ToDo) String() string {
 	if t.Completed {
 		status = "[✓]"
 	}
-	return fmt.Sprintf("%03d %s %s | %s", t.ID, status, t.Description, t.Date.String())
+	return fmt.Sprintf("%03d %s %s - %s", t.ID, status, t.Description, t.Date.String())
 }

@@ -49,7 +49,7 @@ func (m *Model) editTodo() {
 	inputValue := m.textInput.Value()
 
 	// Ensure input is in the format: "Description | DD/MM/YYYY"
-	parts := strings.SplitN(inputValue, "|", 2)
+	parts := strings.SplitN(inputValue, "-", 2)
 	if len(parts) != 2 {
 		m.errMsg = "Invalid format. Use: Description | DD/MM/YYYY"
 		return

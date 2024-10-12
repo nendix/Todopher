@@ -18,7 +18,7 @@ func ParseDate(dateStr string) (Date, error) {
 }
 
 // ParseToDo parses a todo line into a ToDo struct using regex.
-// Expected format: "ID [ ] Description | Due Date" or "ID [✓] Description | Due Date"
+// Expected format: "ID [ ] Description - Due Date" or "ID [✓] Description | Due Date"
 func ParseToDo(line string) (ToDo, error) {
 	var t ToDo
 
@@ -26,7 +26,7 @@ func ParseToDo(line string) (ToDo, error) {
 	line = strings.TrimSpace(line)
 
 	// Define the regex pattern.
-	pattern := `^(\d{3}) \[( |✓)\] (.+) \| (\d{2}/\d{2}/\d{4})$`
+	pattern := `^(\d{3}) \[( |✓)\] (.+) - (\d{2}/\d{2}/\d{4})$`
 	re := regexp.MustCompile(pattern)
 
 	matches := re.FindStringSubmatch(line)

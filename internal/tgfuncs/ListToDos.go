@@ -40,7 +40,7 @@ func ListToDos(filePath string) error {
 		if todo.Completed {
 			status = "[✓]"
 		}
-		fmt.Printf("%03d %s %s | %s\n", todo.ID, status, todo.Description, todo.Date.String())
+		fmt.Printf("%03d %s %s - %s\n", todo.ID, status, todo.Description, todo.Date.String())
 	}
 
 	return nil

@@ -87,7 +87,7 @@ func (m Model) viewFilteredTodos() string {
 		s += fmt.Sprintf("%s %03d %s %s - %s\n", cursor, todo.ID, status, description, todo.Date.String())
 	}
 
-	s += "\n(q)uit, (e)dit, (d)elete, (m)ark/unmark"
+	s += "\n(q)uit, (d)elete, (m)ark/unmark"
 	return s
 }
 
