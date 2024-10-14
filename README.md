@@ -1,4 +1,4 @@
-# TaskGopher
+# Todopher
 
 A simple file-based todo manager written in Go
 
@@ -23,7 +23,7 @@ A simple file-based todo manager written in Go
 ---
 
 > [!NOTE]
-> TaskGopher saves the todos in _HOME_DIR/todo_ and uses a _.env_ file that stores the current todo list<br>
+> Todopher saves the todos in _HOME_DIR/todo_ and uses a _.env_ file that stores the current todo list<br>
 > To **setup the enviroment** you need to run: `tg init` and then `tg setlist todos`.<br>
 
 > [!TIP]

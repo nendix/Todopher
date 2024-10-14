@@ -1,15 +1,15 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
 
-	utils "github.com/nendix/TaskGopher/internal/utils"
+	utils "github.com/nendix/Todopher/internal/utils"
 )
 
-// UnmarkToDos deselects multiple todos in the specified file based on their IDs.
-func UnmarkToDos(filePath string, ids []uint8) error {
-	// Read all ToDos from the file using the helper function.
-	todos, err := utils.ReadAllToDos(filePath)
+// UnmarkTodos deselects multiple todos in the specified file based on their IDs.
+func UnmarkTodos(filePath string, ids []uint8) error {
+	// Read all Todos from the file using the helper function.
+	todos, err := utils.ReadAllTodos(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to read todos: %v", err)
 	}
@@ -20,7 +20,7 @@ func UnmarkToDos(filePath string, ids []uint8) error {
 		idSet[id] = struct{}{}
 	}
 
-	// Flag to check if at least one ToDo was unmarked.
+	// Flag to check if at least one Todo was unmarked.
 	unmarked := false
 
 	// Iterate through the todos and unmark the specified ones.
@@ -37,8 +37,8 @@ func UnmarkToDos(filePath string, ids []uint8) error {
 		return fmt.Errorf("no matching todos found to unmark")
 	}
 
-	// Write the updated ToDos back to the file.
-	err = utils.WriteAllToDos(filePath, todos)
+	// Write the updated Todos back to the file.
+	err = utils.WriteAllTodos(filePath, todos)
 	if err != nil {
 		return fmt.Errorf("failed to write updated todos: %v", err)
 	}

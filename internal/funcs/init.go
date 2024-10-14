@@ -1,11 +1,11 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
 const (
@@ -17,7 +17,7 @@ const (
 // Init crea la cartella ~/todo e il file ~/todo/.env con la variabile TODO_FILE=todos.txt
 func Init() error {
 	// Costruisci il percorso della cartella todo e del file .env
-	todoDirPath, err := utils.GetToDoDir()
+	todoDirPath, err := utils.GetTodoDir()
 	if err != nil {
 		return fmt.Errorf("error getting todo directory: %w", err)
 	}

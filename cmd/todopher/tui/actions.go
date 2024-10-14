@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nendix/TaskGopher/internal/tgfuncs"
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/funcs"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
 func (m *Model) addTodo() {
@@ -32,8 +32,8 @@ func (m *Model) addTodo() {
 		return
 	}
 
-	// Call the AddToDo function to add the todo
-	err = tgfuncs.AddToDo(m.filePath, description, dueDateStr)
+	// Call the AddTodo function to add the todo
+	err = funcs.AddTodo(m.filePath, description, dueDateStr)
 	if err != nil {
 		m.errMsg = fmt.Sprintf("Error adding todo: %v", err)
 		fmt.Println(m.errMsg) // Debug log
@@ -66,8 +66,8 @@ func (m *Model) editTodo() {
 		return
 	}
 
-	// Call the EditToDo function to edit the todo
-	err = tgfuncs.EditToDo(m.filePath, m.todos[m.cursor].ID, description, dueDateStr)
+	// Call the EditTodo function to edit the todo
+	err = funcs.EditTodo(m.filePath, m.todos[m.cursor].ID, description, dueDateStr)
 	if err != nil {
 		m.errMsg = fmt.Sprintf("Error editing todo: %v", err)
 	} else {
@@ -76,7 +76,7 @@ func (m *Model) editTodo() {
 }
 
 func (m *Model) deleteTodo() {
-	err := tgfuncs.DeleteToDos(m.filePath, []uint8{m.todos[m.cursor].ID})
+	err := funcs.DeleteTodos(m.filePath, []uint8{m.todos[m.cursor].ID})
 	if err != nil {
 		m.errMsg = fmt.Sprintf("Error deleting todo: %v", err)
 	} else {
@@ -90,11 +90,11 @@ func (m *Model) toggleMarkTodo() {
 	// Check if the todo is already marked as completed
 	var err error
 	if todo.Completed {
-		// If completed, call UnmarkToDo to unmark it
-		err = tgfuncs.UnmarkToDos(m.filePath, []uint8{todo.ID})
+		// If completed, call UnmarkTodo to unmark it
+		err = funcs.UnmarkTodos(m.filePath, []uint8{todo.ID})
 	} else {
-		// If not completed, call MarkToDos to mark it as completed
-		err = tgfuncs.MarkToDos(m.filePath, []uint8{todo.ID})
+		// If not completed, call MarkTodos to mark it as completed
+		err = funcs.MarkTodos(m.filePath, []uint8{todo.ID})
 	}
 
 	// Handle errors if any
@@ -106,7 +106,7 @@ func (m *Model) toggleMarkTodo() {
 }
 
 func (m *Model) searchTodos(searchTerm string) {
-	var filtered []utils.ToDo
+	var filtered []utils.Todo
 
 	// Iterate through each todo and check if the description contains the keyword
 	for _, todo := range m.todos {
@@ -118,7 +118,7 @@ func (m *Model) searchTodos(searchTerm string) {
 	// If no todos match the search term, set filtered to an empty list
 	if len(filtered) == 0 {
 		m.errMsg = "No todos match your search."
-		m.filtered = []utils.ToDo{}
+		m.filtered = []utils.Todo{}
 	} else {
 		m.filtered = filtered
 		m.errMsg = "" // Clear any previous error message
@@ -134,14 +134,14 @@ func (m *Model) resetSearch() {
 }
 
 func (m *Model) sortTodos(criteria string) {
-	err := tgfuncs.SortToDos(m.filePath, criteria)
+	err := funcs.SortTodos(m.filePath, criteria)
 	if err != nil {
 		m.errMsg = fmt.Sprintf("Error sorting todos: %v", err)
 		return
 	}
 
 	// Reload the todos to reflect the sorted order
-	todos, err := utils.ReadAllToDos(m.filePath)
+	todos, err := utils.ReadAllTodos(m.filePath)
 	if err != nil {
 		m.errMsg = fmt.Sprintf("Error reloading todos: %v", err)
 		return
@@ -161,9 +161,9 @@ func (m *Model) toggleMarkFilteredTodo() {
 
 	var err error
 	if selectedTodo.Completed {
-		err = tgfuncs.UnmarkToDos(m.filePath, []uint8{selectedTodo.ID})
+		err = funcs.UnmarkTodos(m.filePath, []uint8{selectedTodo.ID})
 	} else {
-		err = tgfuncs.MarkToDos(m.filePath, []uint8{selectedTodo.ID})
+		err = funcs.MarkTodos(m.filePath, []uint8{selectedTodo.ID})
 	}
 
 	if err != nil {
@@ -180,7 +180,7 @@ func (m *Model) deleteFilteredTodo() {
 	}
 
 	selectedTodo := m.filtered[m.cursor]
-	err := tgfuncs.DeleteToDos(m.filePath, []uint8{selectedTodo.ID})
+	err := funcs.DeleteTodos(m.filePath, []uint8{selectedTodo.ID})
 
 	if err != nil {
 		m.errMsg = "Error deleting todo: " + err.Error()

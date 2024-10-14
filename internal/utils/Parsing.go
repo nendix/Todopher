@@ -17,10 +17,10 @@ func ParseDate(dateStr string) (Date, error) {
 	return d, nil
 }
 
-// ParseToDo parses a todo line into a ToDo struct using regex.
+// ParseTodo parses a todo line into a Todo struct using regex.
 // Expected format: "ID [ ] Description - Due Date" or "ID [✓] Description | Due Date"
-func ParseToDo(line string) (ToDo, error) {
-	var t ToDo
+func ParseTodo(line string) (Todo, error) {
+	var t Todo
 
 	// Trim leading and trailing whitespace.
 	line = strings.TrimSpace(line)

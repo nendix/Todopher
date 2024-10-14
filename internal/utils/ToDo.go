@@ -2,8 +2,7 @@ package utils
 
 import "fmt"
 
-// ToDo represents a single todo item.
-type ToDo struct {
+type Todo struct {
 	ID          uint8  // Unique identifier for the todo
 	Completed   bool   // Completion status
 	Description string // Description of the todo
@@ -22,8 +21,8 @@ func (d Date) String() string {
 	return fmt.Sprintf("%02d/%02d/%04d", d.Day, d.Month, d.Year)
 }
 
-// String formats the ToDo into the file's string representation.
-func (t ToDo) String() string {
+// String formats the Todo into the file's string representation.
+func (t Todo) String() string {
 	status := "[ ]"
 	if t.Completed {
 		status = "[✓]"

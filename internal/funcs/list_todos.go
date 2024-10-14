@@ -1,15 +1,15 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
 	"path/filepath"
 	"strings"
 
-	utils "github.com/nendix/TaskGopher/internal/utils"
+	utils "github.com/nendix/Todopher/internal/utils"
 )
 
-// ListToDos prints the list of all todos from the specified file.
-func ListToDos(filePath string) error {
+// ListTodos prints the list of all todos from the specified file.
+func ListTodos(filePath string) error {
 	// Read the current list name using the utility function.
 	listName, err := utils.ReadCurrentList()
 	if err != nil {
@@ -23,7 +23,7 @@ func ListToDos(filePath string) error {
 		fmt.Println("List:", listName)
 	}
 
-	todos, err := utils.ReadAllToDos(filePath)
+	todos, err := utils.ReadAllTodos(filePath)
 	if err != nil {
 		return fmt.Errorf("error reading todos: %v", err)
 	}
@@ -34,7 +34,7 @@ func ListToDos(filePath string) error {
 		return nil
 	}
 
-	// Iterate through each ToDo and print it in a formatted manner.
+	// Iterate through each Todo and print it in a formatted manner.
 	for _, todo := range todos {
 		status := "[ ]"
 		if todo.Completed {

@@ -1,4 +1,4 @@
-module github.com/nendix/TaskGopher
+module github.com/nendix/Todopher
 
 go 1.22.5
 

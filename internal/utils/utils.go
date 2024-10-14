@@ -27,7 +27,7 @@ func CreateFileIfNotExists(filename string) (bool, error) {
 }
 
 // Function to get the path of the todo directory
-func GetToDoDir() (string, error) {
+func GetTodoDir() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
@@ -36,7 +36,7 @@ func GetToDoDir() (string, error) {
 }
 
 func GetEnvFilePath() (string, error) {
-	todoDir, err := GetToDoDir()
+	todoDir, err := GetTodoDir()
 	if err != nil {
 		return "", err
 	}
@@ -52,7 +52,7 @@ func GetEnvFilePath() (string, error) {
 
 // ReadCurrentList legge il file .env e restituisce il valore di TODO_FILE
 func ReadCurrentList() (string, error) {
-	todoDir, err := GetToDoDir()
+	todoDir, err := GetTodoDir()
 	if err != nil {
 		return "", err
 	}
@@ -73,10 +73,14 @@ func ReadCurrentList() (string, error) {
 	return fileName, nil
 }
 
-func GetToDoFilePath() (string, error) {
-	home, err := os.UserHomeDir()
+func GetTodoFilePath() (string, error) {
+	todoDir, err := GetTodoDir()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error getting todo directory: %w", err) // TODO: err
 	}
-	return filepath.Join(home, "todo", "todos.txt"), nil
+	fileName, err := ReadCurrentList()
+	if err != nil {
+		return "", fmt.Errorf("error getting current list: %w", err) // TODO: err
+	}
+	return filepath.Join(todoDir, fileName), nil
 }

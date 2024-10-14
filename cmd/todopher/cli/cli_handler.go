@@ -1,34 +1,24 @@
-package main
+package cli
 
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"strconv"
 
-	"github.com/nendix/TaskGopher/cmd/tui"
-	"github.com/nendix/TaskGopher/internal/tgfuncs"
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/funcs"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
-func main() {
-	if len(os.Args) < 2 {
-		if err := tui.StartTUI(); err != nil {
-			fmt.Println("Error launching TUI:", err)
-			os.Exit(1)
-		}
-		return
-	}
-
+func HandleCLI() {
 	command := os.Args[1]
 	switch command {
 	case "help":
-		tgfuncs.Help()
+		funcs.Help()
 		return
 
 	case "init":
 		// Esegui il comando init per creare la cartella ~/todo e il file .env
-		err := tgfuncs.Init()
+		err := funcs.Init()
 		if err != nil {
 			fmt.Println("Error initializing:", err)
 		} else {
@@ -37,18 +27,12 @@ func main() {
 		return
 
 	default:
-		todoDir, err := utils.GetToDoDir()
-		if err != nil {
-			fmt.Println("Error getting todo dir:", err)
-			return
-		}
 
-		fileName, err := utils.ReadCurrentList()
+		filePath, err := utils.GetTodoFilePath()
 		if err != nil {
-			fmt.Println("Error reading current list:", err)
+			fmt.Println(err)
 			return
 		}
-		filePath := filepath.Join(todoDir, fileName)
 
 		switch command {
 
@@ -59,7 +43,7 @@ func main() {
 			}
 			newFile := os.Args[2]
 
-			err := tgfuncs.SetList(newFile)
+			err := funcs.SetList(newFile)
 			if err != nil {
 				fmt.Println("Error setting the list:", err)
 			} else {
@@ -73,7 +57,7 @@ func main() {
 			}
 			label := os.Args[2]
 			due := os.Args[3]
-			err := tgfuncs.AddToDo(filePath, label, due)
+			err := funcs.AddTodo(filePath, label, due)
 			if err != nil {
 				fmt.Println("Error adding todo:", err)
 			} else {
@@ -82,7 +66,7 @@ func main() {
 
 		case "edit", "e":
 			if len(os.Args) < 5 {
-				fmt.Println("Usage: tg edit [id] [new task] [new dd-mm-yy]")
+				fmt.Println("Usage: tg edit [id] [new todo] [new dd-mm-yy]")
 				return
 			}
 			id, err := strconv.ParseUint(os.Args[2], 10, 8)
@@ -90,9 +74,9 @@ func main() {
 				fmt.Println("Invalid ID format:", err)
 				return
 			}
-			newTask := os.Args[3]
+			newTodo := os.Args[3]
 			newDue := os.Args[4]
-			err = tgfuncs.EditToDo(filePath, uint8(id), newTask, newDue)
+			err = funcs.EditTodo(filePath, uint8(id), newTodo, newDue)
 			if err != nil {
 				fmt.Println("Error editing todo:", err)
 			} else {
@@ -113,7 +97,7 @@ func main() {
 				}
 				ids = append(ids, uint8(id))
 			}
-			err = tgfuncs.MarkToDos(filePath, ids)
+			err = funcs.MarkTodos(filePath, ids)
 			if err != nil {
 				fmt.Println("Error marking todo:", err)
 			} else {
@@ -134,7 +118,7 @@ func main() {
 				}
 				ids = append(ids, uint8(id))
 			}
-			err = tgfuncs.UnmarkToDos(filePath, ids)
+			err = funcs.UnmarkTodos(filePath, ids)
 			if err != nil {
 				fmt.Println("Error unmarking todo:", err)
 			} else {
@@ -142,7 +126,7 @@ func main() {
 			}
 
 		case "list", "ls":
-			err := tgfuncs.ListToDos(filePath)
+			err := funcs.ListTodos(filePath)
 			if err != nil {
 				fmt.Println("Error listing todos:", err)
 			}
@@ -153,7 +137,7 @@ func main() {
 				return
 			}
 			keyword := os.Args[2]
-			err := tgfuncs.SearchToDos(filePath, keyword)
+			err := funcs.SearchTodos(filePath, keyword)
 			if err != nil {
 				fmt.Println("Error searching todos:", err)
 			}
@@ -164,7 +148,7 @@ func main() {
 				return
 			}
 			criteria := os.Args[2]
-			err := tgfuncs.SortToDos(filePath, criteria)
+			err := funcs.SortTodos(filePath, criteria)
 			if err != nil {
 				fmt.Println("Error sorting todos:", err)
 			}
@@ -183,7 +167,7 @@ func main() {
 				}
 				ids = append(ids, uint8(id))
 			}
-			err = tgfuncs.DeleteToDos(filePath, ids)
+			err = funcs.DeleteTodos(filePath, ids)
 			if err != nil {
 				fmt.Println("Error deleting todos:", err)
 			} else {
@@ -192,7 +176,7 @@ func main() {
 
 		default:
 			fmt.Println("Unknown command:", command)
-			tgfuncs.Help()
+			funcs.Help()
 		}
 	}
 }

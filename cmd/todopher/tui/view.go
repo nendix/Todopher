@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
 func (m Model) View() string {

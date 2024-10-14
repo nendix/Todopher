@@ -1,4 +1,4 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
@@ -6,13 +6,13 @@ import (
 	"path/filepath"
 
 	"github.com/joho/godotenv"
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
 // saveCurrentFile salva il nome della lista corrente nel file .env
 func saveCurrentFile(listName string) error {
 	// Ottieni il percorso della directory todo
-	todoDir, err := utils.GetToDoDir()
+	todoDir, err := utils.GetTodoDir()
 	if err != nil {
 		return fmt.Errorf("error getting todo directory: %v", err)
 	}
@@ -41,7 +41,7 @@ func saveCurrentFile(listName string) error {
 // SetList verifica se il file della lista esiste in ~/todo/ o lo crea
 func SetList(listName string) error {
 	// Ottieni la directory ~/todo
-	todoDir, err := utils.GetToDoDir()
+	todoDir, err := utils.GetTodoDir()
 	if err != nil {
 		return fmt.Errorf("error getting todo directory: %v", err)
 	}

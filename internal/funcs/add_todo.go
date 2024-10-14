@@ -1,14 +1,14 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
 	"os"
 
-	utils "github.com/nendix/TaskGopher/internal/utils"
+	utils "github.com/nendix/Todopher/internal/utils"
 )
 
-// AddToDo aggiunge un nuovo todo al file specificato
-func AddToDo(filePath, todoDesc, dateStr string) error {
+// AddTodo aggiunge un nuovo todo al file specificato
+func AddTodo(filePath, todoDesc, dateStr string) error {
 	// Parse the date.
 	date, err := utils.ParseDate(dateStr)
 	if err != nil {
@@ -23,8 +23,8 @@ func AddToDo(filePath, todoDesc, dateStr string) error {
 
 	newID := lastID + 1
 
-	// Create the new ToDo.
-	newToDo := utils.ToDo{
+	// Create the new Todo.
+	newTodo := utils.Todo{
 		ID:          newID,
 		Completed:   false, // Default to not completed.
 		Description: todoDesc,
@@ -39,7 +39,7 @@ func AddToDo(filePath, todoDesc, dateStr string) error {
 	defer file.Close()
 
 	// Write the new todo.
-	_, err = file.WriteString(newToDo.String() + "\n")
+	_, err = file.WriteString(newTodo.String() + "\n")
 	if err != nil {
 		return fmt.Errorf("failed to write new todo: %v", err)
 	}
@@ -49,7 +49,7 @@ func AddToDo(filePath, todoDesc, dateStr string) error {
 
 // readLastID reads the last ID used from the file.
 func readLastID(filePath string) (uint8, error) {
-	todos, err := utils.ReadAllToDos(filePath)
+	todos, err := utils.ReadAllTodos(filePath)
 	if err != nil {
 		return 0, fmt.Errorf("failed to read todos: %v", err)
 	}

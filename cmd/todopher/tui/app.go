@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
 // StartTUI initializes and starts the TUI program
@@ -30,7 +30,7 @@ func StartTUI() error {
 
 // initializeModel sets up the initial state of the TUI model
 func initializeModel() (Model, error) {
-	todoDir, err := utils.GetToDoDir()
+	todoDir, err := utils.GetTodoDir()
 	if err != nil {
 		fmt.Println("Error getting todo dir:", err)
 		return Model{}, err
@@ -44,7 +44,7 @@ func initializeModel() (Model, error) {
 	filePath := filepath.Join(todoDir, fileName)
 
 	// Load the todos from the file
-	todos, err := utils.ReadAllToDos(filePath)
+	todos, err := utils.ReadAllTodos(filePath)
 	if err != nil {
 		return Model{
 			filePath: filePath,

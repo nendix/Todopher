@@ -6,24 +6,24 @@ import (
 	"os"
 )
 
-// ReadAllToDos reads all ToDos from the specified file.
-func ReadAllToDos(filePath string) ([]ToDo, error) {
+// ReadAllTodos reads all Todos from the specified file.
+func ReadAllTodos(filePath string) ([]Todo, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return []ToDo{}, nil // If the file does not exist, return an empty list
+			return []Todo{}, nil // If the file does not exist, return an empty list
 		}
 		return nil, fmt.Errorf("failed to open file: %v", err)
 	}
 	defer file.Close()
 
-	var todos []ToDo
+	var todos []Todo
 	scanner := bufio.NewScanner(file)
 	lineNumber := 0
 	for scanner.Scan() {
 		lineNumber++
 		line := scanner.Text()
-		todo, err := ParseToDo(line)
+		todo, err := ParseTodo(line)
 		if err != nil {
 			// Log the error and skip the malformed line
 			fmt.Printf("Warning: Skipping malformed line %d: %v\n", lineNumber, err)

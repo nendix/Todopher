@@ -1,15 +1,15 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
 
-	utils "github.com/nendix/TaskGopher/internal/utils"
+	utils "github.com/nendix/Todopher/internal/utils"
 )
 
-// MarkToDos marks multiple todos as completed based on their IDs in the specified file.
-func MarkToDos(filePath string, ids []uint8) error {
-	// Read all ToDos from the file using the helper function.
-	todos, err := utils.ReadAllToDos(filePath)
+// MarkTodos marks multiple todos as completed based on their IDs in the specified file.
+func MarkTodos(filePath string, ids []uint8) error {
+	// Read all Todos from the file using the helper function.
+	todos, err := utils.ReadAllTodos(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to read todos: %v", err)
 	}
@@ -20,7 +20,7 @@ func MarkToDos(filePath string, ids []uint8) error {
 		idSet[id] = struct{}{}
 	}
 
-	// Flag to check if at least one ToDo was marked.
+	// Flag to check if at least one Todo was marked.
 	marked := false
 
 	// Iterate through the todos and mark the specified ones as completed.
@@ -37,8 +37,8 @@ func MarkToDos(filePath string, ids []uint8) error {
 		return fmt.Errorf("no matching todos found to mark")
 	}
 
-	// Write the updated ToDos back to the file.
-	err = utils.WriteAllToDos(filePath, todos)
+	// Write the updated Todos back to the file.
+	err = utils.WriteAllTodos(filePath, todos)
 	if err != nil {
 		return fmt.Errorf("failed to write updated todos: %v", err)
 	}

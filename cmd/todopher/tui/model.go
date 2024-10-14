@@ -2,7 +2,7 @@ package tui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
 type AppState int
@@ -20,8 +20,8 @@ const (
 )
 
 type Model struct {
-	todos      []utils.ToDo
-	filtered   []utils.ToDo
+	todos      []utils.Todo
+	filtered   []utils.Todo
 	searchTerm string
 	cursor     int
 	state      AppState
@@ -33,7 +33,7 @@ type Model struct {
 
 // Init initializes the TUI model (required for tea.Model interface)
 func (m Model) Init() tea.Cmd {
-	todos, err := utils.ReadAllToDos(m.filePath)
+	todos, err := utils.ReadAllTodos(m.filePath)
 	if err != nil {
 		m.errMsg = "Error loading todos: " + err.Error()
 	} else {
@@ -45,7 +45,7 @@ func (m Model) Init() tea.Cmd {
 // NewModel creates a new Model with default values
 func NewModel(filePath string) Model {
 	return Model{
-		todos:     []utils.ToDo{},
+		todos:     []utils.Todo{},
 		cursor:    0,
 		state:     ViewTodos,
 		textInput: NewTextInput(),

@@ -1,4 +1,4 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
-	utils "github.com/nendix/TaskGopher/internal/utils"
+	utils "github.com/nendix/Todopher/internal/utils"
 )
 
-// SortToDos sorts the todos in the specified file based on the given criteria ("date" or "status") and reassigns IDs.
-func SortToDos(filePath, criteria string) error {
-	// Read all ToDos from the file using the helper function.
-	todos, err := utils.ReadAllToDos(filePath)
+// SortTodos sorts the todos in the specified file based on the given criteria ("date" or "status") and reassigns IDs.
+func SortTodos(filePath, criteria string) error {
+	// Read all Todos from the file using the helper function.
+	todos, err := utils.ReadAllTodos(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to read todos: %v", err)
 	}
@@ -40,8 +40,8 @@ func SortToDos(filePath, criteria string) error {
 		todos[idx].ID = uint8(idx + 1)
 	}
 
-	// Write the sorted ToDos back to the file.
-	err = utils.WriteAllToDos(filePath, todos)
+	// Write the sorted Todos back to the file.
+	err = utils.WriteAllTodos(filePath, todos)
 	if err != nil {
 		return fmt.Errorf("failed to write sorted todos: %v", err)
 	}

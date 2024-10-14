@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-// WriteAllToDos scrive tutte le ToDos nel file specificato
-func WriteAllToDos(filePath string, todos []ToDo) error {
+// WriteAllTodos scrive tutte le Todos nel file specificato
+func WriteAllTodos(filePath string, todos []Todo) error {
 	file, err := os.OpenFile(filePath, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		return fmt.Errorf("failed to open file for writing: %v", err)

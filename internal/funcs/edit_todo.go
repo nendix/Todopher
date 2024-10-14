@@ -1,16 +1,16 @@
-package tgfuncs
+package funcs
 
 import (
 	"fmt"
 	"strings"
 
-	utils "github.com/nendix/TaskGopher/internal/utils"
+	utils "github.com/nendix/Todopher/internal/utils"
 )
 
-// EditToDo modifies the description and/or due date of a todo with the specified ID.
-func EditToDo(filePath string, id uint8, newTodo string, newDate string) error {
-	// Read all ToDos from the file.
-	todos, err := utils.ReadAllToDos(filePath)
+// EditTodo modifies the description and/or due date of a todo with the specified ID.
+func EditTodo(filePath string, id uint8, newTodo string, newDate string) error {
+	// Read all Todos from the file.
+	todos, err := utils.ReadAllTodos(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to read todos: %v", err)
 	}
@@ -45,8 +45,8 @@ func EditToDo(filePath string, id uint8, newTodo string, newDate string) error {
 		return fmt.Errorf("todo with ID %03d not found", id)
 	}
 
-	// Write the updated ToDos back to the file.
-	err = utils.WriteAllToDos(filePath, todos)
+	// Write the updated Todos back to the file.
+	err = utils.WriteAllTodos(filePath, todos)
 	if err != nil {
 		return fmt.Errorf("failed to write updated todos: %v", err)
 	}

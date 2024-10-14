@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nendix/TaskGopher/internal/utils"
+	"github.com/nendix/Todopher/internal/utils"
 )
 
 func (m *Model) reloadTodos() {
-	todos, err := utils.ReadAllToDos(m.filePath)
+	todos, err := utils.ReadAllTodos(m.filePath)
 	if err != nil {
 		m.errMsg = fmt.Sprintf("Error reloading todos: %v", err)
 	} else {

@@ -1,4 +1,4 @@
-package tgfuncs
+package funcs
 
 import "fmt"
 
