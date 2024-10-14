@@ -4,7 +4,7 @@ A simple file-based todo manager written in Go
 
 ### Usage:
 
-`tg [command] [options]`<br>
+`todopher [command] [options]`<br>
 
 #### Commands:
 
