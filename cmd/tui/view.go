@@ -80,12 +80,15 @@ func (m Model) viewFilteredTodos() string {
 		}
 
 		// Highlight the search term if it exists
-		description := todo.Description
+		todoDesc := todo.Description
 		if m.searchTerm != "" {
-			description = highlightSearchTerm(description, m.searchTerm)
+			todoDesc = highlightSearchTerm(todoDesc, m.searchTerm)
 		}
 
-		s += fmt.Sprintf("%s %03d %s %s - %s\n", cursor, todo.ID, status, description, todo.Date.String())
+		todoIDStr := todoIDStyle.Render(fmt.Sprintf("%03d", todo.ID))
+		todoDate := dateStyle.Render(todo.Date.String())
+
+		s += fmt.Sprintf("%s %s %s %s - %s\n", cursor, todoIDStr, status, todoDesc, todoDate)
 	}
 
 	s += "\n(q)uit, (d)elete, (m)ark/unmark"
