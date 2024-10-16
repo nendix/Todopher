@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/nendix/Todopher/cmd/todopher/cli"
-	"github.com/nendix/Todopher/cmd/todopher/tui"
+	"github.com/nendix/Todopher/cmd/cli"
+	"github.com/nendix/Todopher/cmd/tui"
 )
 
 func main() {
