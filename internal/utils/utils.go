@@ -32,7 +32,7 @@ func GetTodoDir() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(homeDir, "todo"), nil
+	return filepath.Join(homeDir, "Todos"), nil
 }
 
 func GetEnvFilePath() (string, error) {
